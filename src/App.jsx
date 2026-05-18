@@ -467,46 +467,68 @@ export default function App() {
     setAiLoading(false); setAiField(null);
   };
 
-  const printPDF = async () => {
-    const { default: jsPDF } = await import("jspdf");
-    const { default: html2canvas } = await import("html2canvas");
-    const { createRoot } = await import("react-dom/client");
+  onst printPDF = async () => {
+  const { default: jsPDF } = await import("jspdf");
+  const { default: html2canvas } = await import("html2canvas");
+  const { createRoot } = await import("react-dom/client");
 
-    // Créer un div caché pour le rendu
-    const tempDiv = document.createElement("div");
-    tempDiv.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;";
-    document.body.appendChild(tempDiv);
+  // Afficher message chargement
+  setSaveMsg("⏳ Génération du PDF en cours...");
 
-    const root = createRoot(tempDiv);
-    root.render(<CVPreview data={data} template={template} />);
+  const tempDiv = document.createElement("div");
+  tempDiv.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;";
+  document.body.appendChild(tempDiv);
 
-    // Attendre le rendu
-    await new Promise(r => setTimeout(r, 1200));
+  const root = createRoot(tempDiv);
+  root.render(<CVPreview data={data} template={template} />);
 
-    try {
-      const canvas = await html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * pageWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+  await new Promise(r => setTimeout(r, 1500));
+
+  try {
+    const canvas = await html2canvas(tempDiv, { 
+      scale: 2, 
+      useCORS: true, 
+      backgroundColor: "#ffffff",
+      logging: false 
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
-    } finally {
-      root.unmount();
-      document.body.removeChild(tempDiv);
     }
-  };
+
+    // Forcer le téléchargement
+    const blob = pdf.output("blob");
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    setSaveMsg("✅ Téléchargement terminé !");
+    setTimeout(() => setSaveMsg(""), 4000);
+  } catch (e) {
+    setSaveMsg("❌ Erreur lors du téléchargement");
+    console.error(e);
+  } finally {
+    root.unmount();
+    document.body.removeChild(tempDiv);
+  }
+};
 
   const inputStyle = { width: "100%", padding: "8px 12px", borderRadius: 6, border: "1.5px solid #d1d5db", fontSize: 13, fontFamily: "'DM Sans', sans-serif", outline: "none", transition: "border-color 0.2s", background: "#fff", boxSizing: "border-box" };
   const labelStyle = { fontSize: 12, fontWeight: 500, color: "#374151", display: "block", marginBottom: 4, marginTop: 12, fontFamily: "'DM Sans', sans-serif" };
