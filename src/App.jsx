@@ -191,8 +191,8 @@ function PricingPage({ onBack, onUpgrade, userPlan, user }) {
         { label: "Modèles exclusifs Pro", ok: true },
         { label: "Photo de profil", ok: true },
       ],
-      cta: userPlan === "pro" ? "✅ Plan actuel" : "Bientôt disponible",
-      active: userPlan === "pro", highlight: false, montant: 2500, comingSoon: true,
+      cta: userPlan === "pro" ? "✅ Actif" : "S'abonner Pro",
+      active: userPlan === "pro", highlight: false, montant: 2500, comingSoon: false,
     },
   ];
 
@@ -213,9 +213,9 @@ function PricingPage({ onBack, onUpgrade, userPlan, user }) {
         },
         onComplete: async function(resp) {
           if (resp.reason === window.FedaPay.CHECKOUT_COMPLETED) {
-            // Mettre à jour le plan dans Supabase
-            await supabase.from("profiles").update({ plan: plan.name.toLowerCase() }).eq("id", user.id);
-            onUpgrade(plan.name.toLowerCase());
+            const newPlan = plan.name.toLowerCase();
+            await supabase.from("profiles").update({ plan: newPlan }).eq("id", user.id);
+            onUpgrade(newPlan);
           }
           setPayLoading(false);
         }
