@@ -464,30 +464,39 @@ export default function App() {
     setAiLoading(false); setAiField(null);
   };
 
-  const printPDF = async () => {
-    const { default: jsPDF } = await import("jspdf");
-    const { default: html2canvas } = await import("html2canvas");
-    const element = document.getElementById("cv-preview");
-    if (!element) return;
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * pageWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 0;
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
-    pdf.save("Julius-CV.pdf");
-  };
+ const printPDF = async () => {
+  const { default: jsPDF } = await import("jspdf");
+  const { default: html2canvas } = await import("html2canvas");
+  
+  // Créer un élément temporaire invisible
+  const tempDiv = document.createElement("div");
+  tempDiv.style.position = "fixed";
+  tempDiv.style.left = "-9999px";
+  tempDiv.style.top = "0";
+  tempDiv.style.width = "720px";
+  tempDiv.style.zIndex = "-1";
+  document.body.appendChild(tempDiv);
+
+  // Render le CV dedans
+  const { createRoot } = await import("react-dom/client");
+  const root = createRoot(tempDiv);
+  root.render(<CVPreview data={data} template={template} />);
+
+  // Attendre que ça se charge
+  await new Promise(r => setTimeout(r, 1000));
+
+  const canvas = await html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+  const imgData = canvas.toDataURL("image/png");
+  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
+  pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
+
+  // Nettoyer
+  root.unmount();
+  document.body.removeChild(tempDiv);
+};
 
   const inputStyle = { width: "100%", padding: "8px 12px", borderRadius: 6, border: "1.5px solid #d1d5db", fontSize: 13, fontFamily: "'DM Sans', sans-serif", outline: "none", transition: "border-color 0.2s", background: "#fff", boxSizing: "border-box" };
   const labelStyle = { fontSize: 12, fontWeight: 500, color: "#374151", display: "block", marginBottom: 4, marginTop: 12, fontFamily: "'DM Sans', sans-serif" };
