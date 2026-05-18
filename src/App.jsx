@@ -464,11 +464,10 @@ export default function App() {
     setAiLoading(false); setAiField(null);
   };
 
- const printPDF = async () => {
+  const printPDF = async () => {
   const { default: jsPDF } = await import("jspdf");
   const { default: html2canvas } = await import("html2canvas");
   
-  // Créer un élément temporaire invisible
   const tempDiv = document.createElement("div");
   tempDiv.style.position = "fixed";
   tempDiv.style.left = "-9999px";
@@ -477,12 +476,10 @@ export default function App() {
   tempDiv.style.zIndex = "-1";
   document.body.appendChild(tempDiv);
 
-  // Render le CV dedans
   const { createRoot } = await import("react-dom/client");
   const root = createRoot(tempDiv);
   root.render(<CVPreview data={data} template={template} />);
 
-  // Attendre que ça se charge
   await new Promise(r => setTimeout(r, 1000));
 
   const canvas = await html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
@@ -493,7 +490,6 @@ export default function App() {
   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
   pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
 
-  // Nettoyer
   root.unmount();
   document.body.removeChild(tempDiv);
 };
@@ -512,6 +508,7 @@ export default function App() {
     { id: "experience", label: "💼 Expériences" },
     { id: "formation", label: "🎓 Formation" },
     { id: "competences", label: "⚡ Compétences" },
+    { id: "mescvs", label: "📄 Mes CV" },
   ];
 
   if (authLoading) return (
@@ -684,6 +681,56 @@ export default function App() {
                 <input style={inputStyle} value={data.languages} onChange={e => update("languages", e.target.value)} placeholder="Français natif, Anglais B2..." />
                 <label style={labelStyle}>Loisirs</label>
                 <textarea style={{ ...inputStyle, minHeight: 70, resize: "vertical" }} value={data.hobbies} onChange={e => update("hobbies", e.target.value)} placeholder="Lecture, Sport, Musique..." />
+              </div>
+            )}
+
+            {tab === "mescvs" && (
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#1e1b4b", marginBottom: 16 }}>
+                  📄 Mes CV sauvegardés ({cvList.length} / {cvLimit === Infinity ? "∞" : cvLimit})
+                </div>
+                {cvList.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "40px 20px", color: "#9ca3af", fontSize: 13 }}>
+                    <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
+                    <div>Aucun CV sauvegardé pour l'instant.</div>
+                    <div style={{ marginTop: 6, fontSize: 12 }}>Remplis le formulaire et clique sur 💾 Sauvegarder !</div>
+                  </div>
+                ) : (
+                  cvList.map((cv, idx) => (
+                    <div key={cv.id} style={{ background: "#f8fafc", borderRadius: 10, padding: "14px 16px", marginBottom: 12, border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "#1e1b4b" }}>CV #{idx + 1}</div>
+                        <div style={{ fontSize: 11.5, color: "#6b7280", marginTop: 2 }}>{cv.nom}</div>
+                        <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
+                          {new Date(cv.created_at).toLocaleDateString("fr-FR")}
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button onClick={() => { setData(cv.contenu); setTab("infos"); }}
+                          style={{ padding: "6px 10px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", border: "none", borderRadius: 6, fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                          ✏️ Modifier
+                        </button>
+                        <button onClick={async () => {
+                          setData(cv.contenu);
+                          await new Promise(r => setTimeout(r, 500));
+                          printPDF();
+                        }}
+                          style={{ padding: "6px 10px", background: "linear-gradient(135deg, #1e1b4b, #312e81)", color: "#fff", border: "none", borderRadius: 6, fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                          📄 PDF
+                        </button>
+                        <button onClick={async () => {
+                          if (window.confirm("Supprimer ce CV ?")) {
+                            await supabase.from("cvs").delete().eq("id", cv.id);
+                            loadProfile(user.id);
+                          }
+                        }}
+                          style={{ padding: "6px 10px", background: "#fee2e2", color: "#ef4444", border: "none", borderRadius: 6, fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                          🗑️
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             )}
           </div>
