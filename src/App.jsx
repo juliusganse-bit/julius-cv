@@ -668,13 +668,6 @@ export default function App() {
             </button>
           </div>
         </div>
-
-        {/* PREVIEW */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "32px", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
-          <div id="cv-preview" ref={previewRef} style={{ width: "100%", maxWidth: 720 }}>
-            <CVPreview data={data} template={template} />
-          </div>
-        </div>
       </div>
     </>
   );
