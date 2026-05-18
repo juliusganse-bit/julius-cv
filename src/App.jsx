@@ -72,7 +72,7 @@ function AuthPage({ onAuth, onBack }) {
       else {
         // Créer le profil
         await supabase.from("profiles").insert({ id: data.user.id, email, plan: "standard", cv_count: 0 });
-        setSuccess("Compte créé ! Vérifie ton email pour confirmer, puis connecte-toi.");
+        setSuccess("Compte créé avec succès!");
         setMode("login");
       }
     }
