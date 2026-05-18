@@ -467,7 +467,7 @@ export default function App() {
     setAiLoading(false); setAiField(null);
   };
 
-  onst printPDF = async () => {
+  const printPDF = async () => {
   const { default: jsPDF } = await import("jspdf");
   const { default: html2canvas } = await import("html2canvas");
   const { createRoot } = await import("react-dom/client");
