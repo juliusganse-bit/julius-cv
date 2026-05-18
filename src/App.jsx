@@ -373,10 +373,12 @@ export default function App() {
   const [showPreview, setShowPreview] = useState(false);
   const previewRef = useRef(null);
 
-  const userPlan = profile?.plan || "standard";
-  const isPremium = userPlan === "premium" || userPlan === "pro";
-  const isPro = userPlan === "pro";
-  const cvLimit = PLAN_LIMITS[userPlan];
+  const ADMIN_EMAIL = "juliusganse@gmail.com";
+  const isAdmin = user?.email === ADMIN_EMAIL;
+  const userPlan = isAdmin ? "pro" : (profile?.plan || "standard");
+  const isPremium = isAdmin || userPlan === "premium" || userPlan === "pro";
+  const isPro = isAdmin || userPlan === "pro";
+  const cvLimit = isAdmin ? Infinity : PLAN_LIMITS[userPlan];
 
   // Vérifier session au chargement
   useEffect(() => {
@@ -468,26 +470,42 @@ export default function App() {
   const printPDF = async () => {
     const { default: jsPDF } = await import("jspdf");
     const { default: html2canvas } = await import("html2canvas");
-    const element = document.getElementById("cv-preview");
-    if (!element) return;
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * pageWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let position = 0;
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
+    const { createRoot } = await import("react-dom/client");
+
+    // Créer un div caché pour le rendu
+    const tempDiv = document.createElement("div");
+    tempDiv.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;";
+    document.body.appendChild(tempDiv);
+
+    const root = createRoot(tempDiv);
+    root.render(<CVPreview data={data} template={template} />);
+
+    // Attendre le rendu
+    await new Promise(r => setTimeout(r, 1200));
+
+    try {
+      const canvas = await html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * pageWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
+    } finally {
+      root.unmount();
+      document.body.removeChild(tempDiv);
     }
-    pdf.save("Julius-CV.pdf");
   };
 
   const inputStyle = { width: "100%", padding: "8px 12px", borderRadius: 6, border: "1.5px solid #d1d5db", fontSize: 13, fontFamily: "'DM Sans', sans-serif", outline: "none", transition: "border-color 0.2s", background: "#fff", boxSizing: "border-box" };
