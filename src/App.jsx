@@ -395,7 +395,6 @@ export default function App() {
   const loadProfile = async (userId) => {
     const { data } = await supabase.from("profiles").select("*").eq("id", userId).single();
     if (data) setProfile(data);
-    // Charger les CV
     const { data: cvs } = await supabase.from("cvs").select("*").eq("user_id", userId);
     if (cvs) setCvList(cvs);
   };
@@ -404,6 +403,18 @@ export default function App() {
     await supabase.auth.signOut();
     setUser(null); setProfile(null); setPage("editor");
   };
+
+  // Sauvegarde automatique dans localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("julius_cv_data");
+    if (saved) {
+      try { setData(JSON.parse(saved)); } catch (e) {}
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("julius_cv_data", JSON.stringify(data));
+  }, [data]);
 
   const update = useCallback((field, value) => setData(d => ({ ...d, [field]: value })), []);
   const updateExp = (id, field, value) => setData(d => ({ ...d, experiences: d.experiences.map(e => e.id === id ? { ...e, [field]: value } : e) }));
@@ -453,12 +464,29 @@ export default function App() {
     setAiLoading(false); setAiField(null);
   };
 
-  const printPDF = () => {
-    const style = document.createElement("style");
-    style.innerHTML = `@media print { body * { visibility: hidden; } #cv-preview, #cv-preview * { visibility: visible; } #cv-preview { position: absolute; left: 0; top: 0; width: 100%; } }`;
-    document.head.appendChild(style);
-    window.print();
-    setTimeout(() => document.head.removeChild(style), 1000);
+  const printPDF = async () => {
+    const { default: jsPDF } = await import("jspdf");
+    const { default: html2canvas } = await import("html2canvas");
+    const element = document.getElementById("cv-preview");
+    if (!element) return;
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    pdf.save("Julius-CV.pdf");
   };
 
   const inputStyle = { width: "100%", padding: "8px 12px", borderRadius: 6, border: "1.5px solid #d1d5db", fontSize: 13, fontFamily: "'DM Sans', sans-serif", outline: "none", transition: "border-color 0.2s", background: "#fff", boxSizing: "border-box" };
