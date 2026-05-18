@@ -32,7 +32,9 @@ const TIPS = {
 const TEMPLATES = {
   classique: { name: "Classique", accent: "#1a365d", bg: "#ffffff", text: "#1a1a2e", secondary: "#4a5568", headerBg: "#1a365d", headerText: "#ffffff" },
   moderne: { name: "Moderne", accent: "#2d6a4f", bg: "#f8f9fa", text: "#1b1b2f", secondary: "#555", headerBg: "#2d6a4f", headerText: "#ffffff" },
-  elegant: { name: "Élégant", accent: "#7b2d8b", bg: "#fefefe", text: "#1a1a1a", secondary: "#666", headerBg: "#7b2d8b", headerText: "#ffffff" },
+  elegant: { name: "Élégant Violet", accent: "#7b2d8b", bg: "#fefefe", text: "#1a1a1a", secondary: "#666", headerBg: "#7b2d8b", headerText: "#ffffff" },
+  elegantOr: { name: "Élégant Or", accent: "#b7791f", bg: "#fffff8", text: "#1a1a1a", secondary: "#7a6a4f", headerBg: "#b7791f", headerText: "#ffffff" },
+  elegantNoir: { name: "Élégant Noir", accent: "#a0aec0", bg: "#1a1a1a", text: "#e2e8f0", secondary: "#a0aec0", headerBg: "#000000", headerText: "#e2e8f0" },
 };
 
 const PLAN_LIMITS = { standard: 1, premium: 7, pro: Infinity };
@@ -310,7 +312,7 @@ function CVPreview({ data, template }) {
     title: { fontSize: 14, marginTop: 4, opacity: 0.85, fontStyle: "italic" },
     contacts: { display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap", fontSize: 12, opacity: 0.9 },
     body: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: 0 },
-    sidebar: { background: template === "classique" ? "#f0f4f8" : template === "moderne" ? "#e8f5e9" : "#f5f0f8", padding: "24px 20px", borderRight: `2px solid ${t.accent}20` },
+    sidebar: { background: template === "classique" ? "#f0f4f8" : template === "moderne" ? "#e8f5e9" : template === "elegantOr" ? "#fdf8e1" : template === "elegantNoir" ? "#2d2d2d" : "#f5f0f8", padding: "24px 20px", borderRight: `2px solid ${t.accent}20` },
     main: { padding: "24px 28px" },
     sectionTitle: { fontFamily: "'Playfair Display', serif", fontSize: 13, fontWeight: 700, color: t.accent, textTransform: "uppercase", letterSpacing: "2px", borderBottom: `1.5px solid ${t.accent}`, paddingBottom: 4, marginBottom: 10, marginTop: 18 },
     item: { marginBottom: 10 },
