@@ -370,6 +370,7 @@ export default function App() {
   const [cvList, setCvList] = useState([]);
   const [saveLoading, setSaveLoading] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
   const previewRef = useRef(null);
 
   const userPlan = profile?.plan || "standard";
@@ -465,34 +466,29 @@ export default function App() {
   };
 
   const printPDF = async () => {
-  const { default: jsPDF } = await import("jspdf");
-  const { default: html2canvas } = await import("html2canvas");
-  
-  const tempDiv = document.createElement("div");
-  tempDiv.style.position = "fixed";
-  tempDiv.style.left = "-9999px";
-  tempDiv.style.top = "0";
-  tempDiv.style.width = "720px";
-  tempDiv.style.zIndex = "-1";
-  document.body.appendChild(tempDiv);
-
-  const { createRoot } = await import("react-dom/client");
-  const root = createRoot(tempDiv);
-  root.render(<CVPreview data={data} template={template} />);
-
-  await new Promise(r => setTimeout(r, 1000));
-
-  const canvas = await html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-  const imgData = canvas.toDataURL("image/png");
-  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
-  pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
-
-  root.unmount();
-  document.body.removeChild(tempDiv);
-};
+    const { default: jsPDF } = await import("jspdf");
+    const { default: html2canvas } = await import("html2canvas");
+    const element = document.getElementById("cv-preview");
+    if (!element) return;
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+    pdf.save("Julius-CV.pdf");
+  };
 
   const inputStyle = { width: "100%", padding: "8px 12px", borderRadius: 6, border: "1.5px solid #d1d5db", fontSize: 13, fontFamily: "'DM Sans', sans-serif", outline: "none", transition: "border-color 0.2s", background: "#fff", boxSizing: "border-box" };
   const labelStyle = { fontSize: 12, fontWeight: 500, color: "#374151", display: "block", marginBottom: 4, marginTop: 12, fontFamily: "'DM Sans', sans-serif" };
@@ -749,11 +745,38 @@ export default function App() {
                 );
               })}
             </div>
+            <button onClick={() => setShowPreview(true)} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", marginBottom: 8 }}>
+              👁️ Voir mon CV
+            </button>
             <button onClick={printPDF} style={{ width: "100%", padding: "10px", background: "linear-gradient(135deg, #1e1b4b, #312e81)", color: "#fff", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               📄 Télécharger en PDF
             </button>
           </div>
         </div>
+
+        {/* MODAL PREVIEW */}
+        {showPreview && (
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.85)", zIndex: 1000, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            {/* Header modal */}
+            <div style={{ background: "linear-gradient(135deg, #1e1b4b, #312e81)", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 700, color: "#fff" }}>Aperçu de ton CV</div>
+              <div style={{ display: "flex", gap: 10 }}>
+                <button onClick={printPDF} style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", border: "none", borderRadius: 8, padding: "8px 14px", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                  📄 Télécharger PDF
+                </button>
+                <button onClick={() => setShowPreview(false)} style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 8, padding: "8px 14px", color: "#fff", fontSize: 12, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                  ✕ Fermer
+                </button>
+              </div>
+            </div>
+            {/* CV dans la modal */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
+              <div id="cv-preview" style={{ width: "100%", maxWidth: 720, margin: "0 auto" }}>
+                <CVPreview data={data} template={template} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
