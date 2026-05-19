@@ -293,7 +293,7 @@ export default function App() {
   const [activeTip, setActiveTip] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiField, setAiField] = useState(null);
-  const [page, setPage] = useState("templates");
+  const [page, setPage] = useState(() => localStorage.getItem("julius_cv_page") || "templates");
   const [cvList, setCvList] = useState([]);
   const [saveMsg, setSaveMsg] = useState("");
   const [showPreview, setShowPreview] = useState(false);
@@ -306,7 +306,7 @@ export default function App() {
 
   useEffect(() => { try { localStorage.setItem("julius_cv_data", JSON.stringify(data)); } catch {} }, [data]);
   useEffect(() => { if (templateKey) localStorage.setItem("julius_cv_template", templateKey); }, [templateKey]);
-
+  useEffect(() => { localStorage.setItem("julius_cv_page", page); }, [page]);
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) { setUser(session.user); loadProfile(session.user.id); }
@@ -325,7 +325,7 @@ export default function App() {
     if (cvs) setCvList(cvs);
   };
 
-  const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); setProfile(null); setPage("templates"); };
+ const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); setProfile(null); localStorage.setItem("julius_cv_page", "templates"); setPage("templates"); };
   const update = useCallback((field, value) => setData(d => ({ ...d, [field]: value })), []);
   const updateExp = (id, field, value) => setData(d => ({ ...d, experiences: d.experiences.map(e => e.id === id ? { ...e, [field]: value } : e) }));
   const updateEdu = (id, field, value) => setData(d => ({ ...d, education: d.education.map(e => e.id === id ? { ...e, [field]: value } : e) }));
