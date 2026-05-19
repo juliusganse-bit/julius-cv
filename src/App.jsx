@@ -58,13 +58,7 @@ function AuthPage({ onAuth }) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError("Email ou mot de passe incorrect.");
       else onAuth(data.user);
-    } else {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) { setError(error.message); }
-      else {
-        await supabase.from("profiles").upsert({ id: data.user.id, email, plan: "freemium", cv_count: 0, selected_template: null });
-        onAuth(data.user);
-      }
+    } 
     }
     setLoading(false);
   };
@@ -103,7 +97,6 @@ function AuthPage({ onAuth }) {
       </div>
     </>
   );
-}
 
 // ─── TEMPLATE SELECTOR ────────────────────────────────────────────────────────
 function TemplateSelectorPage({ onSelect, selectedTemplate }) {
@@ -161,12 +154,6 @@ function PricingPage({ onBack, onUpgrade, userPlan, user, payMode }) {
   const [payLoading, setPayLoading] = useState(false);
 
   const plans = [
-    {
-      name: "Freemium", price: "0 F", period: "", badge: null,
-      features: [{ label: "1 CV gratuit", ok: true }, { label: "1 modèle au choix", ok: true }, { label: "Export PDF", ok: true }, { label: "CV supplémentaires", ok: false }, { label: "Tous les modèles", ok: false }],
-      cta: userPlan === "freemium" ? "✅ Plan actuel" : "Plan gratuit",
-      active: userPlan === "freemium", highlight: false, montant: 0, planKey: "freemium",
-    },
     {
       name: "Pay-per-CV", price: "500 F", period: "/ CV", badge: "💳 FLEXIBLE",
       features: [{ label: "1 CV supplémentaire", ok: true }, { label: "Tous les modèles", ok: true }, { label: "Export PDF", ok: true }, { label: "CV sauvegardé", ok: true }, { label: "CV illimités", ok: false }],
@@ -299,7 +286,6 @@ export default function App() {
   const [payMode, setPayMode] = useState(false);
 
   const isAdmin = user?.email === ADMIN_EMAIL;
-  const userPlan = isAdmin ? "illimite" : (profile?.plan || "freemium");
   const cvCount = isAdmin ? 0 : (profile?.cv_count || 0);
   const canDownloadFree = isAdmin || userPlan === "illimite" || cvCount < 1;
 
