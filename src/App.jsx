@@ -157,7 +157,7 @@ function PricingPage({ onBack, onUpgrade, userPlan, user, payMode }) {
     {
       name: "Pay-per-CV", price: "500 F", period: "/ CV", badge: "💳 FLEXIBLE",
       features: [{ label: "1 CV supplémentaire", ok: true }, { label: "Tous les modèles", ok: true }, { label: "Export PDF", ok: true }, { label: "CV sauvegardé", ok: true }, { label: "CV illimités", ok: false }],
-      cta: payMode ? "💳 Payer 500F et télécharger" : "Acheter un CV",
+      cta: payMode ? "💳 Payer 500F et télécharger" : "Faire un CV",
       active: false, highlight: true, montant: 500, planKey: "paypercv",
     },
     {
