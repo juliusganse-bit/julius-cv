@@ -401,9 +401,8 @@ export default function App() {
 
       const link = document.createElement("a");
       link.href = url; 
-      link.download = `${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`;
+      pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
       document.body.appendChild(link); 
-      link.click(); 
       document.body.removeChild(link); 
       URL.revokeObjectURL(url);
 
