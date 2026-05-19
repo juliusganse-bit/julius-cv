@@ -24,7 +24,6 @@ const TEMPLATES = {
 };
 
 const PLANS = {
-  freemium: { name: "Freemium",   cvLimit: 1,        price: 0    },
   paypercv: { name: "Pay-per-CV", cvLimit: Infinity, price: 500  },
   illimite: { name: "Illimité",   cvLimit: Infinity, price: 5000 },
 };
