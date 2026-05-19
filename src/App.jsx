@@ -6,26 +6,26 @@ const FONTS = "@import url('https://fonts.googleapis.com/css2?family=Playfair+Di
 const ADMIN_EMAIL = "juliusganse@gmail.com";
 
 const TEMPLATES = {
-  classique:     { name: "Classique",      accent: "#1a365d", bg: "#ffffff", text: "#1a1a2e", secondary: "#4a5568", headerBg: "#1a365d",  headerText: "#ffffff", sidebar: "#f0f4f8" },
-  moderne:       { name: "Moderne",        accent: "#2d6a4f", bg: "#f8f9fa", text: "#1b1b2f", secondary: "#555",    headerBg: "#2d6a4f",  headerText: "#ffffff", sidebar: "#e8f5e9" },
-  elegantViolet: { name: "Élégant Violet", accent: "#7b2d8b", bg: "#fefefe", text: "#1a1a1a", secondary: "#666",    headerBg: "#7b2d8b",  headerText: "#ffffff", sidebar: "#f5f0f8" },
-  elegantOr:     { name: "Élégant Or",     accent: "#b7791f", bg: "#fffff8", text: "#1a1a1a", secondary: "#7a6a4f", headerBg: "#b7791f",  headerText: "#ffffff", sidebar: "#fdf8e1" },
-  elegantNoir:   { name: "Élégant Noir",   accent: "#a0aec0", bg: "#1a1a1a", text: "#e2e8f0", secondary: "#a0aec0", headerBg: "#000000",  headerText: "#e2e8f0", sidebar: "#2d2d2d" },
-  rouge:         { name: "Rouge Passion",  accent: "#c53030", bg: "#fff5f5", text: "#1a1a1a", secondary: "#666",    headerBg: "#c53030",  headerText: "#ffffff", sidebar: "#fff0f0" },
-  ocean:         { name: "Océan",          accent: "#0077b6", bg: "#f0f8ff", text: "#1a1a2e", secondary: "#555",    headerBg: "#0077b6",  headerText: "#ffffff", sidebar: "#e0f0ff" },
-  minimaliste:   { name: "Minimaliste",    accent: "#333333", bg: "#ffffff", text: "#333333", secondary: "#777",    headerBg: "#333333",  headerText: "#ffffff", sidebar: "#f5f5f5" },
-  nature:        { name: "Nature",         accent: "#386641", bg: "#f9fbf2", text: "#1a2e1a", secondary: "#556",    headerBg: "#386641",  headerText: "#ffffff", sidebar: "#eaf4e0" },
-  sunset:        { name: "Sunset",         accent: "#e85d04", bg: "#fff8f0", text: "#1a1a1a", secondary: "#777",    headerBg: "#e85d04",  headerText: "#ffffff", sidebar: "#fff0e0" },
-  royal:         { name: "Royal",          accent: "#4a1942", bg: "#fdf6ff", text: "#1a1a1a", secondary: "#666",    headerBg: "#4a1942",  headerText: "#ffffff", sidebar: "#f5eaff" },
-  glacier:       { name: "Glacier",        accent: "#48cae4", bg: "#f0fbff", text: "#1a2e3a", secondary: "#557",    headerBg: "#48cae4",  headerText: "#ffffff", sidebar: "#e0f8ff" },
-  terracotta:    { name: "Terracotta",     accent: "#9c4221", bg: "#fdf2ee", text: "#2d1a14", secondary: "#7a5",    headerBg: "#9c4221",  headerText: "#ffffff", sidebar: "#fbe8df" },
-  ardoise:       { name: "Ardoise",        accent: "#475569", bg: "#f8fafc", text: "#1e293b", secondary: "#64748b", headerBg: "#475569",  headerText: "#ffffff", sidebar: "#f1f5f9" },
-  nuit:          { name: "Nuit Étoilée",   accent: "#818cf8", bg: "#0f172a", text: "#e2e8f0", secondary: "#94a3b8", headerBg: "#1e1b4b",  headerText: "#e2e8f0", sidebar: "#1e293b" },
+  classique: { name: "Classique", accent: "#1a365d", bg: "#ffffff", text: "#1a1a2e", secondary: "#4a5568", headerBg: "#1a365d", headerText: "#ffffff", sidebar: "#f0f4f8" },
+  moderne: { name: "Moderne", accent: "#2d6a4f", bg: "#f8f9fa", text: "#1b1b2f", secondary: "#555", headerBg: "#2d6a4f", headerText: "#ffffff", sidebar: "#e8f5e9" },
+  elegantViolet: { name: "Élégant Violet", accent: "#7b2d8b", bg: "#fefefe", text: "#1a1a1a", secondary: "#666", headerBg: "#7b2d8b", headerText: "#ffffff", sidebar: "#f5f0f8" },
+  elegantOr: { name: "Élégant Or", accent: "#b7791f", bg: "#fffff8", text: "#1a1a1a", secondary: "#7a6a4f", headerBg: "#b7791f", headerText: "#ffffff", sidebar: "#fdf8e1" },
+  elegantNoir: { name: "Élégant Noir", accent: "#a0aec0", bg: "#1a1a1a", text: "#e2e8f0", secondary: "#a0aec0", headerBg: "#000000", headerText: "#e2e8f0", sidebar: "#2d2d2d" },
+  rouge: { name: "Rouge Passion", accent: "#c53030", bg: "#fff5f5", text: "#1a1a1a", secondary: "#666", headerBg: "#c53030", headerText: "#ffffff", sidebar: "#fff0f0" },
+  ocean: { name: "Océan", accent: "#0077b6", bg: "#f0f8ff", text: "#1a1a2e", secondary: "#555", headerBg: "#0077b6", headerText: "#ffffff", sidebar: "#e0f0ff" },
+  minimaliste: { name: "Minimaliste", accent: "#333333", bg: "#ffffff", text: "#333333", secondary: "#777", headerBg: "#333333", headerText: "#ffffff", sidebar: "#f5f5f5" },
+  nature: { name: "Nature", accent: "#386641", bg: "#f9fbf2", text: "#1a2e1a", secondary: "#556", headerBg: "#386641", headerText: "#ffffff", sidebar: "#eaf4e0" },
+  sunset: { name: "Sunset", accent: "#e85d04", bg: "#fff8f0", text: "#1a1a1a", secondary: "#777", headerBg: "#e85d04", headerText: "#ffffff", sidebar: "#fff0e0" },
+  royal: { name: "Royal", accent: "#4a1942", bg: "#fdf6ff", text: "#1a1a1a", secondary: "#666", headerBg: "#4a1942", headerText: "#ffffff", sidebar: "#f5eaff" },
+  glacier: { name: "Glacier", accent: "#48cae4", bg: "#f0fbff", text: "#1a2e3a", secondary: "#557", headerBg: "#48cae4", headerText: "#ffffff", sidebar: "#e0f8ff" },
+  terracotta: { name: "Terracotta", accent: "#9c4221", bg: "#fdf2ee", text: "#2d1a14", secondary: "#7a5", headerBg: "#9c4221", headerText: "#ffffff", sidebar: "#fbe8df" },
+  ardoise: { name: "Ardoise", accent: "#475569", bg: "#f8fafc", text: "#1e293b", secondary: "#64748b", headerBg: "#475569", headerText: "#ffffff", sidebar: "#f1f5f9" },
+  nuit: { name: "Nuit Étoilée", accent: "#818cf8", bg: "#0f172a", text: "#e2e8f0", secondary: "#94a3b8", headerBg: "#1e1b4b", headerText: "#e2e8f0", sidebar: "#1e293b" },
 };
 
 const PLANS = {
-  paypercv: { name: "Pay-per-CV", cvLimit: Infinity, price: 500  },
-  illimite: { name: "Illimité",   cvLimit: Infinity, price: 5000 },
+  paypercv: { name: "Pay-per-CV", cvLimit: Infinity, price: 500 },
+  illimite: { name: "Illimité", cvLimit: Infinity, price: 5000 },
 };
 
 const initialData = {
@@ -58,45 +58,45 @@ function AuthPage({ onAuth }) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) setError("Email ou mot de passe incorrect.");
       else onAuth(data.user);
-    } 
     }
-    setLoading(false);
-  };
+  }
+  setLoading(false);
+};
 
-  return (
-    <>
-      <style>{FONTS}</style>
-      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0c29, #1e1b4b, #302b63)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif", padding: 20 }}>
-        <div style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, padding: "40px 36px", width: "100%", maxWidth: 420 }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: "#fff", letterSpacing: "-1px" }}>Julius CV</div>
-            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 4, fontStyle: "italic" }}>Créez votre CV professionnel</div>
-          </div>
-          <div style={{ display: "flex", background: "rgba(255,255,255,0.08)", borderRadius: 10, padding: 4, marginBottom: 24 }}>
-            {["login", "signup"].map(m => (
-              <button key={m} onClick={() => { setMode(m); setError(""); }}
-                style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, background: mode === m ? "#fff" : "none", color: mode === m ? "#1e1b4b" : "rgba(255,255,255,0.6)", fontWeight: mode === m ? 700 : 400, cursor: "pointer", fontSize: 13, fontFamily: "'DM Sans', sans-serif" }}>
-                {m === "login" ? "Connexion" : "Inscription"}
-              </button>
-            ))}
-          </div>
-          {error && <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 8, padding: "10px 14px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>{error}</div>}
-          <div style={{ marginBottom: 12 }}>
-            <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>Adresse email</label>
-            <input style={inputS} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="julius@email.com" />
-          </div>
-          <div style={{ marginBottom: 24 }}>
-            <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>Mot de passe</label>
-            <input style={inputS} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
-          </div>
-          <button onClick={handleSubmit} disabled={loading}
-            style={{ width: "100%", padding: "12px", background: loading ? "rgba(99,102,241,0.5)" : "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
-            {loading ? "⏳ Chargement..." : mode === "login" ? "Se connecter" : "Créer mon compte"}
-          </button>
+return (
+  <>
+    <style>{FONTS}</style>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #0f0c29, #1e1b4b, #302b63)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif", padding: 20 }}>
+      <div style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, padding: "40px 36px", width: "100%", maxWidth: 420 }}>
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: "#fff", letterSpacing: "-1px" }}>Julius CV</div>
+          <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 4, fontStyle: "italic" }}>Créez votre CV professionnel</div>
         </div>
+        <div style={{ display: "flex", background: "rgba(255,255,255,0.08)", borderRadius: 10, padding: 4, marginBottom: 24 }}>
+          {["login", "signup"].map(m => (
+            <button key={m} onClick={() => { setMode(m); setError(""); }}
+              style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, background: mode === m ? "#fff" : "none", color: mode === m ? "#1e1b4b" : "rgba(255,255,255,0.6)", fontWeight: mode === m ? 700 : 400, cursor: "pointer", fontSize: 13, fontFamily: "'DM Sans', sans-serif" }}>
+              {m === "login" ? "Connexion" : "Inscription"}
+            </button>
+          ))}
+        </div>
+        {error && <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 8, padding: "10px 14px", color: "#fca5a5", fontSize: 13, marginBottom: 16 }}>{error}</div>}
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>Adresse email</label>
+          <input style={inputS} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="julius@email.com" />
+        </div>
+        <div style={{ marginBottom: 24 }}>
+          <label style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>Mot de passe</label>
+          <input style={inputS} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" />
+        </div>
+        <button onClick={handleSubmit} disabled={loading}
+          style={{ width: "100%", padding: "12px", background: loading ? "rgba(99,102,241,0.5)" : "linear-gradient(135deg, #6366f1, #4f46e5)", color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          {loading ? "⏳ Chargement..." : mode === "login" ? "Se connecter" : "Créer mon compte"}
+        </button>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 
 // ─── TEMPLATE SELECTOR ────────────────────────────────────────────────────────
 function TemplateSelectorPage({ onSelect, selectedTemplate }) {
@@ -149,7 +149,7 @@ function TemplateSelectorPage({ onSelect, selectedTemplate }) {
   );
 }
 
-// ─── PRICING PAGE ─────────────────────────────────────────────────────────────
+// ─── choix du plan ─────────────────────────────────────────────────────────────
 function PricingPage({ onBack, onUpgrade, userPlan, user, payMode }) {
   const [payLoading, setPayLoading] = useState(false);
 
@@ -169,14 +169,14 @@ function PricingPage({ onBack, onUpgrade, userPlan, user, payMode }) {
   ];
 
   const handlePay = (plan) => {
-    if (plan.active || plan.montant === 0) return;
+    if (plan.active) return;
     setPayLoading(true);
     try {
       window.FedaPay.init({
         public_key: "pk_live_LInjWuIJS2butkQ82sKWsG9N",
         transaction: { amount: plan.montant, description: `Julius CV — ${plan.name}` },
         customer: { email: user?.email || "", firstname: "Client", lastname: "Julius CV" },
-        onComplete: async function(resp) {
+        onComplete: async function (resp) {
           if (resp.reason === window.FedaPay.CHECKOUT_COMPLETED) {
             if (plan.planKey === "illimite") {
               await supabase.from("profiles").update({ plan: "illimite" }).eq("id", user.id);
@@ -289,7 +289,7 @@ export default function App() {
   const cvCount = isAdmin ? 0 : (profile?.cv_count || 0);
   const canDownloadFree = isAdmin || userPlan === "illimite" || cvCount < 1;
 
-  useEffect(() => { try { localStorage.setItem("julius_cv_data", JSON.stringify(data)); } catch {} }, [data]);
+  useEffect(() => { try { localStorage.setItem("julius_cv_data", JSON.stringify(data)); } catch { } }, [data]);
   useEffect(() => { if (templateKey) localStorage.setItem("julius_cv_template", templateKey); }, [templateKey]);
   useEffect(() => { localStorage.setItem("julius_cv_page", page); }, [page]);
   useEffect(() => {
@@ -310,7 +310,7 @@ export default function App() {
     if (cvs) setCvList(cvs);
   };
 
- const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); setProfile(null); localStorage.setItem("julius_cv_page", "templates"); setPage("templates"); };
+  const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); setProfile(null); localStorage.setItem("julius_cv_page", "templates"); setPage("templates"); };
   const update = useCallback((field, value) => setData(d => ({ ...d, [field]: value })), []);
   const updateExp = (id, field, value) => setData(d => ({ ...d, experiences: d.experiences.map(e => e.id === id ? { ...e, [field]: value } : e) }));
   const updateEdu = (id, field, value) => setData(d => ({ ...d, education: d.education.map(e => e.id === id ? { ...e, [field]: value } : e) }));
@@ -373,22 +373,22 @@ export default function App() {
       const pageHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pageWidth;
       const imgHeight = (canvas.height * pageWidth) / canvas.width;
-      let heightLeft = imgHeight; 
+      let heightLeft = imgHeight;
       let position = 0;
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft > 0) {
-         position = heightLeft - imgHeight; pdf.addPage(); pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight); heightLeft -= pageHeight; 
-        }
+        position = heightLeft - imgHeight; pdf.addPage(); pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight); heightLeft -= pageHeight;
+      }
       const blob = pdf.output("blob");
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
-      link.href = url; 
+      link.href = url;
       pdf.save(`${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`);
-      document.body.appendChild(link); 
-      document.body.removeChild(link); 
+      document.body.appendChild(link);
+      document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
       setSaveMsg("✅ Téléchargement terminé !");
@@ -396,8 +396,9 @@ export default function App() {
 
       setTimeout(() => setSaveMsg(""), 4000);
 
-    } catch (e) { 
-      setSaveMsg("❌ Erreur lors du téléchargement"); console.error(e); }
+    } catch (e) {
+      setSaveMsg("❌ Erreur lors du téléchargement"); console.error(e);
+    }
     finally { root.unmount(); document.body.removeChild(tempDiv); }
   };
 
