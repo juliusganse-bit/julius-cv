@@ -392,17 +392,28 @@ export default function App() {
       let position = 0;
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-      
-      while (heightLeft > 0) { position = heightLeft - imgHeight; pdf.addPage(); pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight); heightLeft -= pageHeight; }
+
+      while (heightLeft > 0) {
+         position = heightLeft - imgHeight; pdf.addPage(); pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight); heightLeft -= pageHeight; 
+        }
       const blob = pdf.output("blob");
       const url = URL.createObjectURL(blob);
+
       const link = document.createElement("a");
-      link.href = url; link.download = `${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`;
-      document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+      link.href = url; 
+      link.download = `${data.firstName || "Julius"}_${data.lastName || "CV"}.pdf`;
+      document.body.appendChild(link); 
+      link.click(); 
+      document.body.removeChild(link); 
+      URL.revokeObjectURL(url);
+
       setSaveMsg("✅ Téléchargement terminé !");
       await saveCV();
+
       setTimeout(() => setSaveMsg(""), 4000);
-    } catch (e) { setSaveMsg("❌ Erreur lors du téléchargement"); console.error(e); }
+
+    } catch (e) { 
+      setSaveMsg("❌ Erreur lors du téléchargement"); console.error(e); }
     finally { root.unmount(); document.body.removeChild(tempDiv); }
   };
 
