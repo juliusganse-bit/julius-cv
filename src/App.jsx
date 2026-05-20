@@ -287,7 +287,7 @@ export default function App() {
 
   const isAdmin = user?.email === ADMIN_EMAIL;
   const cvCount = isAdmin ? 0 : (profile?.cv_count || 0);
-  const canDownloadFree = isAdmin || userPlan === "illimite" || cvCount < 1;
+  const canDownloadFree = isAdmin;
 
   useEffect(() => { try { localStorage.setItem("julius_cv_data", JSON.stringify(data)); } catch { } }, [data]);
   useEffect(() => { if (templateKey) localStorage.setItem("julius_cv_template", templateKey); }, [templateKey]);
